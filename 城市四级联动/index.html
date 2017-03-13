@@ -1,0 +1,30 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="email=no" name="format-detection" />
+    <title>纯JS4级联动</title>  
+    <script type="text/javascript" src="address.js"></script>  
+</head>  
+<body>  
+	<style type="text/css">
+		select{width: 33%;height: 40px;}
+	</style>
+<div>  
+
+<select id="area" value="地区"></select>  
+<select id="cmbProvince" value="省"></select>  
+<select id="cmbCity" value="市"></select>  
+<select id="cmbArea" value="区"></select>  
+<br /><br />  
+<script type="text/javascript">  
+
+    addressInit('area','cmbProvince','cmbCity','cmbArea','上海', '上海市', '黄浦区', '外滩街道');  
+   
+</script>  
+</div>  
+</body>  
+</html>  

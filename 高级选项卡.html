@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>高级选项卡</title>
+	<style>
+		.hide{display: none;}
+		.box{width:200px;height:200px;border:1px solid #000;margin-bottom: 10px;}
+		.box input.active{background: red;}
+	</style>
+</head>
+<body>
+	<div id="div1" class="box">
+		<input type="button" value="1" class="active"/>
+		<input type="button" value="2" />
+		<input type="button" value="3" />
+		<div>111</div>
+		<div class="hide">222</div>
+		<div class="hide">333</div>
+	</div>
+	<div id="div2" class="box">
+		<input type="button" value="1" class="active"/>
+		<input type="button" value="2" />
+		<input type="button" value="3" />
+		<div>111</div>
+		<div class="hide">222</div>
+		<div class="hide">333</div>
+	</div>
+	<div id="div3" class="box">
+		<input type="button" value="1"/>
+		<input type="button" value="2" />
+		<input type="button" value="3" />
+		<div>111</div>
+		<div class="hide">222</div>
+		<div class="hide">333</div>
+	</div>
+	<div id="div4" class="box">
+		<input type="button" value="1"/>
+		<input type="button" value="2" />
+		<input type="button" value="3" />
+		<div>111</div>
+		<div class="hide">222</div>
+		<div class="hide">333</div>
+	</div>
+  <script src='http://apps.bdimg.com/libs/jquery/1.7.2/jquery.min.js'></script>
+	<script>
+		function Tab(){
+			this.oParent=null;
+			this.oInput=null;
+			this.oDiv=null;
+			this.iNow=0;
+			this.settings={
+				events:"click",
+				delay:0
+			}
+		}
+
+		Tab.prototype.init=function(obj,opt){
+			$.extend(this.settings,opt||{});
+			this.oParent=$(obj);
+			this.oInput=this.oParent.find("input");
+			this.oDiv=this.oParent.find("div");
+			this.changeSel();
+		}
+
+		Tab.prototype.changeSel=function(){
+			var that=this;
+			var timer=null;
+			this.nowSel(this.settings.initIndex);
+			this.oInput.on(this.settings.events,function(){
+				var _this=this;
+				if(that.settings.delay){
+					timer=setTimeout(function(){
+						switchShow($(_this));
+					}, that.settings.delay);
+				}else{
+					switchShow($(this));
+				}
+			}).mouseout(function(){
+				clearTimeout(timer);
+			});
+
+			function switchShow(obj){
+				that.oInput.removeClass('active');
+				obj.addClass('active');
+				that.oDiv.addClass('hide');
+				that.oDiv.eq(obj.index()).removeClass('hide');
+				that.iNow=obj.index();
+				if(that.settings.getContentable){
+					alert(that.getContent());
+				}
+			}
+		}
+
+		Tab.prototype.nowSel=function(index){
+			index=index||0;
+			this.oInput.removeClass('active');
+			this.oInput.eq(index).addClass('active');
+			this.oDiv.addClass('hide');
+			this.oDiv.eq(index).removeClass('hide');
+			this.iNow=index;
+		}
+
+		Tab.prototype.getContent=function(){
+			return $(this.oDiv).eq(this.iNow).html();
+		}
+
+		var t1=new Tab();
+		t1.init('#div1',{});
+
+		var t2=new Tab();
+		t2.init('#div2',{
+			"events":"mouseover"
+		});
+
+		var t3=new Tab();
+		t3.init('#div3',{
+			"events":"mouseover",
+			"delay":500,
+			"initIndex":1
+		});
+
+		var t4=new Tab();
+		t4.init('#div4',{
+			"events":"mouseover",
+			"initIndex":1,
+			"getContentable":true
+		});
+	</script>
+</body>
+</html>

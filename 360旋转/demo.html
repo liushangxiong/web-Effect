@@ -1,0 +1,80 @@
+<html>
+<meta charset= "utf-8">
+<head>
+<title></title>
+</head>
+<style>
+img{margin-left:300px;margin-top:130px;}
+</style>
+<body>
+<img id = 'img1' src ="img/miaov (0).jpg">
+</body>
+<script>
+window.onload = function(){
+	var x = 0;
+	var oImg = document.getElementById('img1');
+	var aImg = document.getElementsByTagName('img');
+	var oLastimg = oImg;
+	var lastX = 0;
+	var iSpeed = 0;
+	var timer = null;
+	for(var i=1;i<77;i++){
+		(function(newImg){
+			var oImg = new Image();
+		oImg.onload=function(){            //图片预加载；
+			newImg.src = this.src;
+		}
+		oImg.src = 'img/miaov ('+i+').jpg';
+		newImg.src = 'img/miaov ('+i+').jpg';
+		newImg.style.display = 'none';
+		document.body.appendChild(newImg);
+		})(document.createElement('img'))       //这是闭包么？看不懂的样子；
+	}
+	document.onmousedown = function(ev){
+		clearInterval(timer);
+		var ev = ev  || event;
+		var disX = ev.clientX - x;
+	document.onmousemove = function(ev){
+		var ev = ev  || event;
+		x = ev.clientX - disX;
+		move();
+		iSpeed = x - lastX;
+		lastX = x;
+		//document.title=iSpeed;
+		return false;
+	}
+	document.onmouseup = function(){
+		document.onmouseup = document.onmousemove = null;
+		//document.title=iSpeed;
+		timer = setInterval(function(){
+			x+=iSpeed;
+			move();
+		},30)
+	}
+		function move(){
+			if(iSpeed>0){
+				iSpeed--;
+			}else{
+				iSpeed++;
+			}
+			if(iSpeed==0){
+				clearInterval(timer);
+			}
+			var l = parseInt(-x/20);
+		if(l>0){
+			l = -x%77;
+		}else{
+			l = -x + -Math.floor(-x/77)*77;        //这里是除号啊，哥们儿；
+			//alert(-Math.floor(x%77)*77)
+		};
+		if(oLastimg!=aImg[l]){
+			oLastimg.style.display = 'none';
+			aImg[l].style.display = 'block';
+			oLastimg = aImg[l];
+		}
+		}
+		return false;
+	}
+}
+</script>
+</html>
